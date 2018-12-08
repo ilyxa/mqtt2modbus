@@ -1,7 +1,8 @@
 TARGET = mqtt2modbus
-CC = gcc
-CFLAGS = -Wall -pedantic -std=gnu11 -O2 `pkg-config --cflags libmodbus`
-LIBS = -lmosquitto `pkg-config --libs libmodbus`
+CC = cc
+CFLAGS = -m64 -Wall -pedantic -O2 `pkg-config --cflags libmodbus` `pkg-config --cflags libmosquitto`
+LDFLAGS = -m64 
+LIBS = `pkg-config --libs libmosquitto` `pkg-config --libs libmodbus`
 
 .PHONY: default all clean
 
@@ -17,7 +18,7 @@ HEADERS = $(wildcard *.h)
 .PRECIOUS: $(TARGET) $(OBJECTS)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) $(LIBS) -o $@
+	$(CC) $(LDFLAGS) $(OBJECTS) $(LIBS) -o $@
 
 clean:
 	-rm -f *.o
